@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ben</title>
+  <style media="screen">
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body{
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      background: #FFE494;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      overflow: hidden;
+    }
+
+    .body--benahavis {
+      background: url('benahavis.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    @keyframes fadeIn {
+      from {
+        -webkit-filter: blur(20px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        -webkit-filter: invert(1);
+        opacity: 0.5;
+        transform: scale(2) rotate(20deg) skewX(20deg);
+      }
+    }
+
+    img {
+      display: block;
+      max-width: 50%;
+      animation: fadeIn 10s ease-in forwards;
+    }
+
+    @keyframes benIn {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(0%);
+      }
+    }
+
+
+    @keyframes benChatter {
+      50% {
+        background: url('benopen.png');
+      }
+    }
+
+    .benIn {
+      position: absolute;
+      right: 0%;
+      top: 10%;
+      transform: translateX(100%);
+    }
+
+    .benIn--show {
+      animation: benIn 10s ease-out forwards;
+    }
+
+    .ben {
+      width: 566px;
+      height: 800px;
+      background: url('benclosed.png');
+      animation: benChatter .25s 2s infinite forwards steps(1);
+    }
+
+    @keyframes staticNoise {
+      0% { background-image: url('static1.jpg'); }
+      30% { background-image: url('static2.jpg'); }
+      50% { background-image: url('static3.jpg'); }
+      100% { background-image: url('static4.jpg'); }
+    }
+
+    .static {
+      z-index: 1;
+      background-image: url('static1.jpg');
+      background-size: contain;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      animation: staticNoise .2s infinite;
+    }
+
+    .content {
+      background: white;
+      font-size: 2em;
+      align-self: flex-start;
+    }
+
+    .content > *,
+    .content ol > * {
+      display: none;
+    }
+
+    .content ol {
+      display: block;
+      list-style: inside;
+    }
+
+    @keyframes washing {
+      to {
+        transform: rotate(390deg) scale(1.1);
+      }
+    }
+
+    .washingmachine {
+      display: none;
+      position: absolute;
+      top: 0; left: 0;
+      height: 371px;
+      width: 421px;
+      background: url('washingmachine.png');
+      animation: washing .1s infinite alternate;
+    }
+
+    .bendeath {
+      display: none;
+      z-index: 1;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: darkred;
+    }
+
+    .benno {
+      background-image: url('static4.jpg');
+      background-size: cover;
+      background-position: center bottom;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      animation: fadeOut 30s forwards;
+    }
+  </style>
+</head>
+<body>
+  <img class="logo" src="logo.svg" alt="ben">
+  <audio id="music" src="music.mp3" autoplay></audio>
+  <audio id="staticsound" src="static.mp3"></audio>
+  <audio id="bentalking" src="bentalking.ogg"></audio>
+
+  <div class="static" style="display:none;"></div>
+
+  <div class="bendeath">
+    <div class="benno"></div>
+  </div>
+
+  <div class="benIn">
+    <div class="ben"></div>
+  </div>
+
+  <div class="washingmachine"></div>
+
+  <section class="content">
+    <h1>Ben Harris Regime</h1>
+
+    <h2>Manifesto</h2>
+
+    <ol style="display: block;">
+      <li>Dunno</li>
+      <li>Washing Machine</li>
+    </ol>
+  </section>
+
+  <script type="text/javascript">
+  console.log('happy birthday rob from ben');
+  
+  document.addEventListener("DOMContentLoaded", function(event) {
+    getSoundAndFadeAudio('music');
+  });
+
+  function getSoundAndFadeAudio (audiosnippetId) {
+
+    var sound = document.getElementById(audiosnippetId);
+    var staticSound = document.querySelector('#staticsound');
+    var benSound = document.querySelector('#bentalking');
+
+    // initialise to 0.0
+    sound.volume = 0.0;
+
+    var fadeAudio = setInterval(function () {
+      console.log(sound.volume);
+        // Only fade if past the fade out point or not at zero already
+        if (sound.volume < 0.9) {
+            sound.volume += 0.1;
+        } else {
+          clearInterval(fadeAudio);
+
+          document.querySelector('.static').style.display = 'block';
+          document.querySelector('.logo').style.display = 'none';
+
+          sound.pause();
+          staticSound.play();
+
+          setTimeout(function(){
+            document.querySelector('.static').style.display = 'none';
+            document.body.classList.add('body--benahavis');
+            document.querySelector('.benIn').classList.add('benIn--show');
+            benSound.play();
+            setTimeout(function(){
+              document.querySelector('.content h1').style.display = 'block';
+              setTimeout(function(){
+                document.querySelector('.content h2').style.display = 'block';
+                setTimeout(function(){
+                  document.querySelector('.content li:nth-child(1)').style.display = 'block';
+                  setTimeout(function(){
+                    document.querySelector('.content li:nth-child(2)').style.display = 'block';
+                    document.querySelector('.washingmachine').style.display = 'block';
+                    setTimeout(function(){
+                      document.querySelector('.bendeath').style.display = 'block';
+                    }, 9000);
+                  }, 11000);
+                }, 10000);
+              }, 5000);
+            }, 15000);
+          }, 1000);
+        }
+    }, 1000);
+
+  }
+  </script>
+</body>
+</html>
